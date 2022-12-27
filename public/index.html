@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polygon Plotter</title>
+  </head>
+  <body>
+    <div style="display: flex" class="parent-div">
+      <div class="poly-1">
+        <canvas id="tri-canvas" width="200" height="200"></canvas>
+        <p><i>Triangle</i></p>
+      </div>
+      <div class="poly-2">
+        <canvas id="quadri-canvas" width="200" height="350"></canvas>
+        <p><i>Quadrilateral</i></p>
+      </div>
+    </div>
+    <script>
+      const btnEl = document.getElementById('btn-view');
+      const arr = [];
+      fetch('http://localhost:8000/poly', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          //Triangle
+          const cTriangle = data[0][2];
+          const parsedCords = cTriangle.split('|');
+          console.log(parsedCords);
+          let triA = parsedCords[0].split('-');
+          let triB = parsedCords[1].split('-');
+          let triC = parsedCords[2].split('-');
+          let triAX = Number(triA[0]);
+          let triAY = Number(triA[1]);
+          let triBX = Number(triB[0]);
+          let triBY = Number(triB[1]);
+          let triCX = Number(triC[0]);
+          let triCY = Number(triC[1]);
+
+          var canvas = document.querySelector('#tri-canvas');
+          var ctx1 = canvas.getContext('2d');
+          ctx1.beginPath();
+          ctx1.moveTo(triAX, triAY);
+          ctx1.lineTo(triBX, triBY);
+          ctx1.lineTo(triCX, triCY);
+          ctx1.closePath();
+          ctx1.stroke();
+
+          //Quadrilateral
+          const cQuadri = data[1][2];
+          const cordsQ = cQuadri.split('|');
+          let quaA = cordsQ[0].split('-');
+          let quaB = cordsQ[1].split('-');
+          let quaC = cordsQ[2].split('-');
+          let quaD = cordsQ[3].split('-');
+          let quaAX = Number(quaA[0]);
+          let quaAY = Number(quaA[1]);
+          let quaBX = Number(quaB[0]);
+          let quaBY = Number(quaB[1]);
+          let quaCX = Number(quaC[0]);
+          let quaCY = Number(quaC[1]);
+          let quaDX = Number(quaD[0]);
+          let quaDY = Number(quaD[1]);
+
+          var canvas2 = document.querySelector('#quadri-canvas');
+          var ctx2 = canvas2.getContext('2d');
+          ctx2.beginPath();
+          ctx2.moveTo(quaAX, quaAY);
+          ctx2.lineTo(quaBX, quaBY);
+          ctx2.lineTo(quaCX, quaCY);
+          ctx2.lineTo(quaDX, quaDY);
+          ctx2.closePath();
+          ctx2.stroke();
+        });
+    </script>
+  </body>
+</html>
